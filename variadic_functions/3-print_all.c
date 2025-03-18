@@ -3,16 +3,17 @@
 #include <stdarg.h>
 
 /**
- * print_all - Prints anything based on format specifiers
- * @format: List of types of arguments passed to the function
+ * print_all - Prints anything based on format specifier.
+ * @format: List of argument types.
  */
 void print_all(const char * const format, ...)
 {
 va_list args;
-unsigned int i = 0;
+int i = 0;
 char *str, *sep = "";
 
 va_start(args, format);
+
 while (format && format[i])
 {
 if (format[i] == 'c')
@@ -28,14 +29,10 @@ if (!str)
 str = "(nil)";
 printf("%s%s", sep, str);
 }
-else
-{
-i++;
-continue;
-}
 sep = ", ";
 i++;
 }
-va_end(args);
+
 printf("\n");
+va_end(args);
 }

@@ -1,7 +1,7 @@
 #include "variadic_functions.h"
 
 /**
- * main - check the code
+ * main - Check the print_all function.
  *
  * Return: Always 0.
  */
