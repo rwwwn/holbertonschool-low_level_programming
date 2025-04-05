@@ -1,19 +1,22 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "main.h"
 #include <fcntl.h>
 #include <unistd.h>
-#include <sys/stat.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+#define BUFSIZE 1024
 
 /**
- * main - Copy the content of a file to another file.
- * @ac: Argument count.
- * @av: Argument vector.
- * Return: 0 on success, exits with error codes on failure.
+ * main - Copies content of a file to another
+ * @ac: Argument count
+ * @av: Argument vector
+ *
+ * Return: 0 on success, exits with codes on failure
  */
 int main(int ac, char **av)
 {
-int fd_from, fd_to, r, w;
-char buf[1024];
+int fd_from, fd_to, r, w, c1, c2;
+char buf[BUFSIZE];
 
 if (ac != 3)
 {
@@ -36,7 +39,7 @@ close(fd_from);
 exit(99);
 }
 
-while ((r = read(fd_from, buf, 1024)) > 0)
+while ((r = read(fd_from, buf, BUFSIZE)) > 0)
 {
 w = write(fd_to, buf, r);
 if (w == -1 || w != r)
@@ -56,13 +59,15 @@ close(fd_to);
 exit(98);
 }
 
-if (close(fd_from) == -1)
+c1 = close(fd_from);
+if (c1 == -1)
 {
 dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_from);
 exit(100);
 }
 
-if (close(fd_to) == -1)
+c2 = close(fd_to);
+if (c2 == -1)
 {
 dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_to);
 exit(100);
