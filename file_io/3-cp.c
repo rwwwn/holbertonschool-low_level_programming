@@ -5,10 +5,10 @@
 #include <sys/stat.h>
 
 /**
- * main - Copies content of one file to another.
+ * main - Copy the content of a file to another file.
  * @ac: Argument count.
  * @av: Argument vector.
- * Return: 0 on success, exits with code on error.
+ * Return: 0 on success, exits with error codes on failure.
  */
 int main(int ac, char **av)
 {
@@ -39,7 +39,7 @@ exit(99);
 while ((r = read(fd_from, buf, 1024)) > 0)
 {
 w = write(fd_to, buf, r);
-if (w != r)
+if (w == -1 || w != r)
 {
 dprintf(STDERR_FILENO, "Error: Can't write to %s\n", av[2]);
 close(fd_from);
@@ -47,6 +47,7 @@ close(fd_to);
 exit(99);
 }
 }
+
 if (r == -1)
 {
 dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", av[1]);
@@ -60,6 +61,7 @@ if (close(fd_from) == -1)
 dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_from);
 exit(100);
 }
+
 if (close(fd_to) == -1)
 {
 dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_to);
