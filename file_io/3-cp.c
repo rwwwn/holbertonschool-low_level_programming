@@ -62,10 +62,20 @@ int file_from = open_file_from(file_from_name);
 int file_to = open_file_to(file_to_name);
 char buffer[BUFFER_SIZE];
 int r, w;
-
-while (1)
-{
 r = read(file_from, buffer, BUFFER_SIZE);
+while (r > 0)
+{
+w = write(file_to, buffer, r);
+if (w != r)
+{
+dprintf(STDERR_FILENO, "Error: Can't write to %s\n", file_to_name);
+safe_close(file_from);
+safe_close(file_to);
+exit(99);
+}
+r = read(file_from, buffer, BUFFER_SIZE);
+}
+
 if (r == -1)
 {
 dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", file_from_name);
@@ -73,10 +83,6 @@ safe_close(file_from);
 safe_close(file_to);
 exit(98);
 }
-if (r == 0)
-break;
-w = write(file_to, buffer, r);
-if (w != r)
 {
 dprintf(STDERR_FILENO, "Error: Can't write to %s\n", file_to_name);
 safe_close(file_from);
