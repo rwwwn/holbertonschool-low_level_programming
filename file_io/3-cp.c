@@ -67,7 +67,7 @@ r = read(file_from, buffer, BUFFER_SIZE);
 while (r > 0)
 {
 w = write(file_to, buffer, r);
-if (w != r)
+if (w == -1 || w != r)
 {
 dprintf(STDERR_FILENO, "Error: Can't write to %s\n", file_to_name);
 safe_close(file_from);
@@ -76,6 +76,7 @@ exit(99);
 }
 r = read(file_from, buffer, BUFFER_SIZE);
 }
+
 if (r == -1)
 {
 dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", file_from_name);
